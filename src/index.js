@@ -1,24 +1,34 @@
+import { createStore } from 'redux';
+
 const add = document.getElementById('add');
 const minus = document.getElementById('minus');
 const number = document.querySelector('span');
 
-let count = 0;
+// initial state
+number.innerText = 0;
 
-number.innerText = count;
+// 고유한 액션 타입을 정의하는 방법
+const ADD = 'ADD';
+const MINUS = 'MINUS';
 
-const updateText = () => {
-  number.innerText = count;
+// reducer: 액션을 받아서 새로운 상태를 만드는 함수
+const countModifier = (count = 0, action) => {
+  switch (action.type) {
+    case ADD:
+      return count + 1;
+    case MINUS:
+      return count - 1;
+    default:
+      return count;
+  }
 };
 
-const handleAddClick = () => {
-  count++;
-  updateText();
-};
+// store: 상태를 저장하는 객체
+const countStore = createStore(countModifier);
 
-const handleMinusClick = () => {
-  count--;
-  updateText();
-};
+// dispatch: action을 reducer에 전달
+add.addEventListener('click', () => countStore.dispatch({ type: ADD }));
+minus.addEventListener('click', () => countStore.dispatch({ type: MINUS }));
 
-add.addEventListener('click', handleAddClick);
-minus.addEventListener('click', handleMinusClick);
+// subscribe: 변경된 상태를 처리하는 함수
+countStore.subscribe(() => (number.innerText = countStore.getState()));
