@@ -10,8 +10,7 @@ function Detail({ toDo }) {
   );
 }
 
-const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps);
+function mapStateToProps(state, ownProps) {
   const {
     match: {
       params: { id },
@@ -19,6 +18,6 @@ const mapStateToProps = (state, ownProps) => {
   } = ownProps;
 
   return { toDo: state.find((toDo) => toDo.id === parseInt(id)) };
-};
+}
 
 export default connect(mapStateToProps)(Detail);
